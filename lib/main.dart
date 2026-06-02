@@ -97,7 +97,7 @@ class MainNavigationScreenState extends State<MainNavigationScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildNavItem(0, Icons.home, 'Home'),
-              _buildNavItem(1, Icons.menu_book_outlined, 'Material'),
+              _buildNavItem(1, Icons.menu_book_outlined, 'Materi'),
               _buildNavItem(2, Icons.quiz_outlined, 'Quiz'),
             ],
           ),
