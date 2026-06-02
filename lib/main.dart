@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   // Ensure status bar style is clean
@@ -609,6 +610,17 @@ class _MaterialScreenState extends State<MaterialScreen> {
     },
   ];
 
+  Future<void> _launchMapsUrl() async {
+    final Uri url = Uri.parse('https://www.google.com/maps/search/?api=1&query=Pemandian+Alam+Cibulan+Kuningan');
+    try {
+      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+        throw Exception('Could not launch $url');
+      }
+    } catch (e) {
+      debugPrint('Error launching maps: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_selectedMaterialIndex != null) {
@@ -619,6 +631,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
 
   Widget _buildListPage(BuildContext context) {
     return Scaffold(
+      key: const ValueKey('material_list_scaffold'),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Padding(
@@ -790,6 +803,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
     final List<dynamic> paragraphs = item['paragraphs'] as List<dynamic>;
 
     return Scaffold(
+      key: ValueKey('material_detail_scaffold_$index'),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF0E5482)),
@@ -951,6 +965,32 @@ class _MaterialScreenState extends State<MaterialScreen> {
               }
               return const SizedBox.shrink();
             }),
+            if (index == 3) ...[
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton.icon(
+                  onPressed: _launchMapsUrl,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1B5E20),
+                    foregroundColor: Colors.white,
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  icon: const Icon(Icons.map_rounded),
+                  label: const Text(
+                    'Buka Petunjuk Arah',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ),
+            ],
             const SizedBox(height: 24),
           ],
         ),
